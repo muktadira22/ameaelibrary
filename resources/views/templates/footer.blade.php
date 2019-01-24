@@ -31,6 +31,8 @@
     <script src="{{ asset('assets') }}/dist/js/sb-admin-2.js"></script>
     <script type="text/javascript">
         var baseUrl = "http://localhost:8000/api/v1/";
+        var idUser = "{{ Auth::id() }}";
+        localStorage.setItem("api_token", "{{ Auth::user()->api_token }}");
     </script>
 
     @stack("script")

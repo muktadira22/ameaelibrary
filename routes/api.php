@@ -26,6 +26,7 @@ Route::group(['prefix' => 'v1'], function(){
 
 	Route::group(['prefix' => 'transaction'], function(){
 		Route::get('{id}','TransactionController@getMemberData');
+		Route::post('{id}','TransactionController@storePeminjaman');
 	});
 
 	Route::group(['prefix' => 'buku'], function(){

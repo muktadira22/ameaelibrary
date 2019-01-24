@@ -36,6 +36,9 @@
     <!-- Custom Fonts -->
     <link href="{{ asset('assets') }}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Custom Loader Css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/css/custom-loader.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -53,5 +56,7 @@
     <div id="wrapper">
         @yield('content')
     </div>
+
+    @include("templates/loader")
 
     @include("templates/footer")

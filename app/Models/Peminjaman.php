@@ -12,6 +12,6 @@ class Peminjaman extends Model
     protected $keyType = "string";
     // public $timestamps = false;
     protected $fillable = [
-    	"id_peminjaman","tgl_peminjaman","id_member","id_user"
+    	"id_peminjaman","tgl_peminjaman","id_member","tgl_kembali","id_user"
     ];
 }

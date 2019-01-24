@@ -14,7 +14,6 @@
                         DATA MEMBER
                     </div>
                     <div class="panel-body">
-
                         <!-- .has-success .has-error -->
                         <div class="row">
                             <div class="col-lg-10">   
@@ -56,7 +55,7 @@
                     <div class="panel-body">
                         <div id="pengembalian">
                             <legend>DAFTAR PENGEMBALIAN</legend>
-                            <table width="100%" class="table table-striped table-bordered table-hover table-responsive">
+                            <table width="100%" class="table table-striped table-bordered table-hover table-responsive" id="tblPengembalian">
                             <thead>
                                 <tr>
                                     <th>ID BUKU</th>
@@ -68,27 +67,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="i in 3">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>Rp. 0,-</td>
-                                    <td>
-                                        <button class="btn btn-success btn-sm">
-                                            KEMBALIKAN
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">TOTAL DENDA</td>
-                                    <td>Rp. 0,-</td>
-                                    <td>
-                                        <button class="btn btn-success btn-sm">
-                                            KEMBALIKAN
-                                        </button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                         </div>
@@ -96,7 +74,7 @@
                         <!-- DIV PEMINJAMAN -->
                         <div id="peminjaman" style="margin-top: 10px">
                             <legend>DAFTAR PEMINJAMAN</legend>
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target=".transaction-modal"  id="searchBook">
+                            <button class="btn btn-primary btn-sm" id="searchBook">
                                 TAMBAH PEMINJAMAN
                             </button>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="tblPeminjaman">
@@ -111,41 +89,32 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">
-                                            HAPUS
-                                        </button>
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">
-                                            HAPUS
-                                        </button>
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">
-                                            HAPUS
-                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-info btn-lg">
+                        <button class="btn btn-info btn-lg" id="btnPinjamBuku">
                             PINJAM
                         </button>
                         </div>
@@ -215,171 +184,6 @@
 @endsection
 
 @push("script")
-    <script type="text/javascript">
-        var members = "";
-        var books = "";
-        $(document).ready(function() {
-            // // DATA TABLE
-            // $('#dataTable').DataTable({
-            //     responsive: true,
-            // });
-
-            $("#peminjaman").hide();
-            $("#pengembalian").hide();
-
-            // MODAL
-            $(".transaction-modal").modal({
-                keyboard: false,
-                backdrop: 'static',
-                show: false
-            });
-
-            // IF SEARCH MEMBER HAS CLICKED
-            $("#searchMember").click(function(){
-                $(".modal-title").text("SEARCH MEMBER");
-                $("#dataTableMember").show();
-                $("#dataTableBook").hide();
-                $("#dataTableMember").DataTable();
-            });
-
-
-            $.getJSON(baseUrl+"member", function(response){
-                var body = "";
-                members = response.result;
-                console.log(members);
-
-                $("#dataTableMember tbody").html("");
-
-                $.each(members, function(index, members){
-                   body += "<tr>";
-                   body += "<td>"+members.id_member+"</td>";
-                   body += "<td>"+members.id_member+"</td>";
-                   body += "<td>"+members.nama+"</td>";
-                   body += "<td>"+members.pekerjaan+"</td>";
-                   body += "<td>";
-                   body += "<button onclick='addMember("+index+")' class='btn btn-primary'>PILIH</button>";
-                   body += "</td>";
-                   body += "</tr>";
-                });
-
-                $("#dataTableMember tbody").append(body);
-            });
-
-            $.getJSON(baseUrl+"buku", function(response){
-                var body = "";
-                books = response.result;
-
-                $("#dataTableBook tbody").html("");
-
-                $.each(books, function(index, books){
-                   body += "<tr>";
-                   body += "<td>"+books.id_buku+"</td>";
-                   body += "<td>"+books.judul_buku+"</td>";
-                   body += "<td>"+books.pengarang+"</td>";
-                   body += "<td>"+books.tahun_terbit+"</td>";
-                   body += "<td>";
-                   body += "<button onclick='addMember("+index+")' class='btn btn-primary'>PILIH</button>";
-                   body += "</td>";
-                   body += "</tr>";
-                });
-
-                $("#dataTableBook tbody").append(body);
-            });
-
-
-            $("#searchMemberTxt").keyup(function(event) {
-                if(event.key == "Enter")
-                {
-                    let ketemu = false;
-                    let id_member = $(this).val();
-                    let index = '';
-                    for(var i = 0; i < members.length; i++)
-                    {
-                        if(id_member == members[i].id_member)
-                        {
-                            ketemu = true;
-                            index = i;
-                            break;
-                        }
-                    }
-
-                    if(ketemu)
-                    {
-                        $(this).closest('div').removeClass('has-error');
-                        $(this).closest('div').addClass('has-success');
-                        $(this).attr('placeholder', 'Press Enter');
-
-                        $("#namaMember").text(members[i].nama);
-                        $("#alamatMember").text(members[i].alamat);
-
-                        loadPeminjaman(members[i].id_member);
-                    }
-                    else
-                    {
-                        $(this).closest('div').removeClass('has-success');
-                        $(this).closest('div').addClass('has-error');
-                        $(this).val('');
-                        $(this).attr('placeholder', 'Data not found');
-                        $("#namaMember").text("-");
-                        $("#alamatMember").text("-");
-                    }
-                }
-            });
-            $("#searchBook").click(function(){
-                $(".modal-title").text("SEARCH BOOK");
-                $("#dataTableBook").show();
-                $("#dataTableMember").hide();
-                $("#dataTableMember").parents('div.dataTables_wrapper').first().hide();
-                $("#dataTableBook").DataTable();
-            });
-
-            // SCRIPT PA YAYAT
-            // $("[NAMA TABLE]").on('click', '[nama class button]', function(){
-            //     var currentRow = $(this).closest('tr');
-            //     var kdoe = currentRow.find('th:eq(1)').text();
-
-            //     $('#lnama').text('nama');
-            // });
-        });
-
-
-            function addMember(index)
-            {
-                let member = members[index];
-                let nama = member.nama;
-                let addr = member.alamat;
-                let id = member.id_member;
-
-                $("#namaMember").text(nama);
-                $("#alamatMember").text(addr);
-                $("#searchMemberTxt").val(id);
-                $(".transaction-modal").modal('hide');
-
-                $("#searchMemberTxt").closest('div').removeClass('has-error');
-                $("#searchMemberTxt").closest('div').addClass('has-success');
-                $("#searchMemberTxt").attr('placeholder', 'Press Enter');
-
-                loadPeminjaman(id);
-            }
-
-            function loadPeminjaman(id)
-            {
-                $.getJSON(baseUrl + "transaction/"+id, function(response){
-                    var data = response;
-                    if(data.pengembalian)
-                    {
-                        $("#peminjaman").show();
-                        $("#pengembalian").show();
-                        $("#announcement").hide();
-                    }
-                    else
-                    {
-                        $("#pengembalian").hide();
-                        $("#peminjaman").show();
-                        $("#announcement").hide();
-                    }
-                });
-            }
-    </script>
+    <script type="text/javascript" src="{{ asset('assets') }}/js/ameaelibrary.js"></script>
 @endpush
 
